@@ -1,12 +1,7 @@
 package library.management.system.classes;
 
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -62,7 +57,7 @@ public class Student extends User{
 
     @Override
     public String toString() {
-        return "StudentOpr{" +
+        return "Student{" +
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", clas='" + clas + '\'' +

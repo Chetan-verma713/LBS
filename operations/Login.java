@@ -2,11 +2,10 @@ package library.management.system.operations;
 
 import library.management.system.classes.Librarian;
 import library.management.system.classes.Student;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import java.sql.ResultSet;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -22,6 +21,8 @@ public class Login {
 
         boolean flag = true;
         while (flag) {
+
+            session.getTransaction().begin();
 
             Scanner scanner = new Scanner(System.in);
 
@@ -47,7 +48,10 @@ public class Login {
                         throw new RuntimeException("Invalid input!");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            session.getTransaction().commit();
 
         }
 
@@ -69,8 +73,8 @@ public class Login {
 
             if (student.getName() != null) {
                 System.out.println("Student has been login successfully. ");
-                StudentOpr studentOpr = new StudentOpr(session, student);
-                studentOpr.operation();
+                StudentOperation studentOperation = new StudentOperation(session, student);
+                studentOperation.operation();
             }
             else {
                 System.out.println("Invalid id or password");
@@ -79,9 +83,9 @@ public class Login {
         } catch (NullPointerException e) {
             System.out.println("Student not found! ");
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        session.getTransaction().commit();
     }
 
     private void loginLibrarian() {
@@ -101,8 +105,8 @@ public class Login {
 
             if (librarian.getName() != null) {
                 System.out.println("Librarian has been login successfully. ");
-                LibrarianOpr librarianOpr = new LibrarianOpr(session, librarian);
-                librarianOpr.operation();
+                LibrarianOperation librarianOperation = new LibrarianOperation(session, librarian);
+                librarianOperation.operation();
             }
             else {
                 System.out.println("Invalid id or password");
@@ -111,9 +115,8 @@ public class Login {
         } catch (NullPointerException e) {
             System.out.println("Librarian not found! ");
         } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        session.getTransaction().commit();
 
     }
 

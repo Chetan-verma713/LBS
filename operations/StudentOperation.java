@@ -7,25 +7,22 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 
 import java.time.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-public class StudentOpr {
+public class StudentOperation {
 
     Session session;
     Student student;
-    public StudentOpr(Session session, Student student) {
+    public StudentOperation(Session session, Student student) {
         this.session = session;
         this.student = student;
     }
 
     public void operation() {
-
-        session.beginTransaction();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -85,6 +82,7 @@ public class StudentOpr {
 
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
@@ -121,8 +119,6 @@ public class StudentOpr {
 
         studentBook.setReturnDate(null);
 
-        session.getTransaction().commit();
-
     }
 
     public void returnBook(String title, String author, Date returnBook) {
@@ -141,9 +137,7 @@ public class StudentOpr {
                 studentBook.setReturnDate(returnBook);
             }
         }
-
-        session.beginTransaction().commit();
-
+        
     }
 
     @SuppressWarnings("unchecked")

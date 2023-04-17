@@ -2,8 +2,8 @@ package library.management.system.operations;
 
 import library.management.system.classes.Librarian;
 import library.management.system.classes.Student;
+
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.Scanner;
 
@@ -17,10 +17,11 @@ public class Register {
 
     public void register() {
 
-        Transaction transaction = session.beginTransaction();
-
         boolean flag = true;
+
         while (flag) {
+
+            session.getTransaction().begin();
 
             Scanner scanner = new Scanner(System.in);
 
@@ -34,7 +35,6 @@ public class Register {
             switch (userType) {
                 case 1:
                     registerLibrarian();
-
                     break;
 
                 case 2:
@@ -49,7 +49,7 @@ public class Register {
                     System.out.println("Invalid input!");
             }
 
-            transaction.commit();
+            session.getTransaction().commit();
 
         }
 

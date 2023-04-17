@@ -1,7 +1,6 @@
 package library.management.system.operations;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.Scanner;
 
@@ -44,6 +43,7 @@ public class Management {
 
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }

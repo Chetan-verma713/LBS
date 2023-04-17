@@ -4,21 +4,21 @@ import library.management.system.classes.Book;
 import library.management.system.classes.Librarian;
 import library.management.system.classes.Student;
 import library.management.system.classes.StudentBook;
+
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class LibrarianOpr {
+public class LibrarianOperation {
 
     Session session;
     Librarian librarian;
 
-    public LibrarianOpr(Session session, Librarian librarian) {
+    public LibrarianOperation(Session session, Librarian librarian) {
         this.session = session;
         this.librarian = librarian;
     }
@@ -119,6 +119,7 @@ public class LibrarianOpr {
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
@@ -137,9 +138,6 @@ public class LibrarianOpr {
 
             session.save(book);
 
-            session.beginTransaction().commit();
-
-
         } catch (Exception e) {
             System.out.println("No such book found in stock, Please add it.");
         }
@@ -150,11 +148,11 @@ public class LibrarianOpr {
         Book book = new Book(id, title, Author, noOfUnit);
         session.save(book);
 
-
     }
 
 
     public void deleteBook(String title, String author) {
+
         try {
             SQLQuery query = session.createSQLQuery("select * from book where title like '" + title + "%' and author like '" + author + "%'");
             query.addEntity(Book.class);
@@ -163,11 +161,10 @@ public class LibrarianOpr {
 
             session.delete(book);
 
-            session.beginTransaction().commit();
-
         } catch (Exception e) {
             System.out.println("No such book found in stock, Please add it.");
         }
+
     }
 
     public void displayStock() {
@@ -176,12 +173,16 @@ public class LibrarianOpr {
 
         List<Book> bookList = query.list();
 
-        for (Book book: bookList) {
-            System.out.println(book);
+        if (!bookList.isEmpty()) {
+            for (Book book : bookList) {
+                System.out.println(book);
+            }
+        } else {
+            System.out.println("No book in stock");
         }
-
     }
 
+    @SuppressWarnings("unchecked")
     private void searchBook(String name) {
 
         Query query = session.createQuery("from Book where title like :name");
@@ -189,10 +190,14 @@ public class LibrarianOpr {
 
         List<Book> bookList = (List<Book>) query.list();
 
-        for (Book book : bookList) {
-            System.out.println(book.toString());
+        if (bookList.isEmpty()) {
+            System.out.println("No such book found.");
         }
-
+        else {
+            for (Book book : bookList) {
+                System.out.println(book.toString());
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -205,9 +210,8 @@ public class LibrarianOpr {
     }
 
     public void addUser(Student student) {
-        session.save(student);
 
-        session.beginTransaction().commit();
+        session.save(student);
 
     }
 
@@ -218,9 +222,9 @@ public class LibrarianOpr {
         query.setParameter("id", id);
 
         Student student = (Student) query.uniqueResult();
-        StudentOpr studentOpr = new StudentOpr(session,student);
+        StudentOperation studentOperation = new StudentOperation(session,student);
 
-        studentOpr.checkAccount();
+        studentOperation.checkAccount();
 
         Query queryBooks = session.createQuery("from StudentBook where student_id =:studentId");
         queryBooks.setParameter("studentId", id);
@@ -228,14 +232,12 @@ public class LibrarianOpr {
         List<StudentBook> studentBookList = (List<StudentBook>) queryBooks.list();
 
         for (StudentBook studentBook: studentBookList) {
-            studentOpr.returnBook(studentBook.getBook().getTitle(), studentBook.getBook().getAuthor(), StudentOpr.convertFrom(LocalDate.now()));
+            studentOperation.returnBook(studentBook.getBook().getTitle(), studentBook.getBook().getAuthor(), StudentOperation.convertFrom(LocalDate.now()));
         }
 
-        studentOpr.checkAccount();
+        studentOperation.checkAccount();
 
         session.delete(student);
-
-        session.beginTransaction().commit();
 
     }
 
