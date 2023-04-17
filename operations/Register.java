@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import java.util.Scanner;
 
 public class Register {
-
     Session session;
 
     public Register(Session session) {
@@ -30,23 +29,29 @@ public class Register {
             System.out.println("Enter 3 for back");
             System.out.print("Enter your user-type : ");
 
-            int userType = scanner.nextInt();
+            try {
+                int userType = scanner.nextInt();
 
-            switch (userType) {
-                case 1:
-                    registerLibrarian();
-                    break;
+                switch (userType) {
+                    case 1:
+                        registerLibrarian();
+                        break;
 
-                case 2:
-                    registerStudent();
-                    break;
+                    case 2:
+                        registerStudent();
+                        break;
 
-                case 3:
-                    flag = false;
-                    break;
+                    case 3:
+                        flag = false;
+                        break;
 
-                default:
-                    System.out.println("Invalid input!");
+                    default:
+                        System.out.println("Invalid input!");
+                }
+
+
+            } catch (Exception e) {
+                System.out.println("register -> input mismatch");
             }
 
             session.getTransaction().commit();

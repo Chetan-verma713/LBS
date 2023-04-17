@@ -10,6 +10,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class LibrarianOperation {
 
     public void operation() {
 
-        Scanner scanner = new Scanner(System.in);
+
 
         boolean flag = true;
         while (flag) {
@@ -40,12 +41,15 @@ public class LibrarianOperation {
             System.out.println("Enter 8 for back");
             System.out.print("Enter your choice : ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            String title;
-            String author;
             try {
+
+                Scanner scanner = new Scanner(System.in);
+
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                String title;
+                String author;
                 switch (choice) {
 
                     case 1:
@@ -118,6 +122,8 @@ public class LibrarianOperation {
 
                 }
 
+            } catch (InputMismatchException e) {
+                System.out.println("Librarian -> Input Mismatch");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -138,6 +144,8 @@ public class LibrarianOperation {
 
             session.save(book);
 
+            System.out.println("Book stock updated successfully.");
+
         } catch (Exception e) {
             System.out.println("No such book found in stock, Please add it.");
         }
@@ -147,6 +155,8 @@ public class LibrarianOperation {
 
         Book book = new Book(id, title, Author, noOfUnit);
         session.save(book);
+
+        System.out.println("Book inserted successfully.");
 
     }
 
@@ -160,6 +170,8 @@ public class LibrarianOperation {
             Book book = (Book) query.uniqueResult();
 
             session.delete(book);
+
+            System.out.println("Book deleted successfully.");
 
         } catch (Exception e) {
             System.out.println("No such book found in stock, Please add it.");
@@ -205,13 +217,18 @@ public class LibrarianOperation {
         Query query1 = session.createQuery("from Student");
         List<Student> studentList = (List<Student>) query1.list();
 
-        studentList.forEach(student -> System.out.println(student.toString()));
-
+        if (studentList.isEmpty()) {
+            studentList.forEach(student -> System.out.println(student.toString()));
+        } else  {
+            System.out.println("No user exist.");
+        }
     }
 
     public void addUser(Student student) {
 
         session.save(student);
+
+        System.out.println("User added successfully.");
 
     }
 
@@ -238,6 +255,8 @@ public class LibrarianOperation {
         studentOperation.checkAccount();
 
         session.delete(student);
+
+        System.out.println("User deleted successfully.");
 
     }
 

@@ -10,6 +10,7 @@ import org.hibernate.Query;
 
 import java.time.*;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,12 +37,12 @@ public class StudentOperation {
             System.out.println("Enter 5 for back");
             System.out.print("Enter your choice : ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            String title;
-            String author;
             try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                String title;
+                String author;
                 switch (choice) {
 
                     case 1:
@@ -81,7 +82,9 @@ public class StudentOperation {
                         System.out.println("Invalid choice, Please try again!");
 
                 }
-            } catch (Exception e) {
+            } catch (InputMismatchException e) {
+                System.out.println("Student -> Input mismatch");
+            }catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -137,7 +140,7 @@ public class StudentOperation {
                 studentBook.setReturnDate(returnBook);
             }
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")

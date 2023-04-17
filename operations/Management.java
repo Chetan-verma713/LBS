@@ -2,11 +2,13 @@ package library.management.system.operations;
 
 import org.hibernate.Session;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Management {
 
     public static void manage(Session session) {
+
         boolean flag = true;
 
         while (flag) {
@@ -18,10 +20,11 @@ public class Management {
             System.out.println("Enter 3 for Exit");
 
             System.out.print("Enter your choice : ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
 
             try {
+
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1:
@@ -42,8 +45,8 @@ public class Management {
                         throw new RuntimeException("Invalid choice, Please try again!");
 
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            }  catch (Exception e) {
+                System.out.println(e.getMessage());
             }
 
         }
