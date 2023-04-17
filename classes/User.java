@@ -1,11 +1,7 @@
 package library.management.system.classes;
 
-import org.hibernate.Session;
-
 import javax.persistence.*;
-import java.time.*;
-import java.util.Date;
-import java.util.List;
+
 
 @MappedSuperclass
 public class User<T> {
