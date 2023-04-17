@@ -6,10 +6,28 @@ import java.util.List;
 
 @Entity
 @Table(name = "student")
-public class Student extends User{
-
+public class Student {
+    @Id
+    private int id;
+    @Column(name = "name", nullable = false)
+    private String name;
     @Column(name = "class", nullable = false)
     private String clas;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     @Column(name = "password", nullable = false)
     private String password;
     @OneToMany(
